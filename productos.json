@@ -1,0 +1,151 @@
+{
+  "empresa": "Aceros Import Silver",
+  "categorias": [
+    {
+      "id_categoria": 1,
+      "nombre": "Barras y Fierros",
+      "slug": "barras",
+      "tono": "red",
+      "url_referencia": "https://www.acersahierros.com/productos/hierro-corrugado/",
+      "imagen_url": "./hierro-corrugado.jpg"
+    },
+    {
+      "id_categoria": 2,
+      "nombre": "Vigas y Perfiles",
+      "slug": "perfiles",
+      "tono": "red",
+      "url_referencia": "https://www.jaderiversteel.com/es/ipn400-product/",
+      "imagen_url": "./Viga Perfil IPN 100mm.jpg"
+    },
+    {
+      "id_categoria": 3,
+      "nombre": "Tubos Estructurales",
+      "slug": "tubos",
+      "tono": "gold",
+      "url_referencia": "https://www.hu-steel.com/es/news364_1181.html",
+      "imagen_url": "./Tubo Cuadrado.png"
+    },
+    {
+      "id_categoria": 4,
+      "nombre": "Planchas y Calaminas",
+      "slug": "planchas",
+      "tono": "red",
+      "url_referencia": "http://treamperu.com/index.php/productos/calamina-galvanizada/",
+      "imagen_url": "./Calamina Trapezoidal 0.40mm.jpg"
+    }
+  ],
+  "productos": [
+    {
+      "id_producto": 1,
+      "codigo": "AIS-BAR-12",
+      "nombre": "Fierro Corrugado 12mm (1/2\")",
+      "especificacion": "Grado 60 · Barra 12m · ASTM A615",
+      "unidad": "Barra 12m",
+      "categoria": "Barras y Fierros",
+      "categoria_slug": "barras",
+      "precio_bs": 88.0,
+      "stock": 320,
+      "bloqueado": 0,
+      "url_referencia": "https://www.acersahierros.com/productos/hierro-corrugado/",
+      "imagen_url": "./hierro-corrugado.jpg"
+    },
+    {
+      "id_producto": 2,
+      "codigo": "AIS-BAR-16",
+      "nombre": "Fierro Corrugado 16mm (5/8\")",
+      "especificacion": "Grado 60 · Barra 12m · Alta resistencia",
+      "unidad": "Barra 12m",
+      "categoria": "Barras y Fierros",
+      "categoria_slug": "barras",
+      "precio_bs": 154.0,
+      "stock": 180,
+      "bloqueado": 0,
+      "url_referencia": "https://www.acersahierros.com/productos/hierro-corrugado/",
+      "imagen_url": "./hierro-corrugado.jpg"
+    },
+    {
+      "id_producto": 3,
+      "codigo": "AIS-PER-IPN100",
+      "nombre": "Viga Perfil IPN 100mm",
+      "especificacion": "Acero estructural A36 · Largo 6m",
+      "unidad": "Barra 6m",
+      "categoria": "Vigas y Perfiles",
+      "categoria_slug": "perfiles",
+      "precio_bs": 245.0,
+      "stock": 95,
+      "bloqueado": 0,
+      "url_referencia": "https://www.jaderiversteel.com/es/ipn400-product/",
+      "imagen_url": "./Viga Perfil IPN 100mm.jpg"
+    },
+    {
+      "id_producto": 4,
+      "codigo": "AIS-ANG-50",
+      "nombre": "Angular Estructural 50x50x5mm",
+      "especificacion": "Laminado en caliente · Barra 6m",
+      "unidad": "Barra 6m",
+      "categoria": "Vigas y Perfiles",
+      "categoria_slug": "perfiles",
+      "precio_bs": 92.0,
+      "stock": 140,
+      "bloqueado": 0,
+      "url_referencia": "https://www.jaderiversteel.com/es/ipn400-product/",
+      "imagen_url": "./Viga Perfil IPN 100mm.jpg"
+    },
+    {
+      "id_producto": 5,
+      "codigo": "AIS-TUB-40C",
+      "nombre": "Tubo Cuadrado 40x40x2mm",
+      "especificacion": "Acero LAC · Largo 6m",
+      "unidad": "Tubo 6m",
+      "categoria": "Tubos Estructurales",
+      "categoria_slug": "tubos",
+      "precio_bs": 118.0,
+      "stock": 210,
+      "bloqueado": 0,
+      "url_referencia": "https://www.hu-steel.com/es/news364_1181.html",
+      "imagen_url": "./Tubo Cuadrado.png"
+    },
+    {
+      "id_producto": 6,
+      "codigo": "AIS-TUB-60R",
+      "nombre": "Tubo Rectangular 60x40x2mm",
+      "especificacion": "Cerramientos y estructuras · Largo 6m",
+      "unidad": "Tubo 6m",
+      "categoria": "Tubos Estructurales",
+      "categoria_slug": "tubos",
+      "precio_bs": 142.0,
+      "stock": 0,
+      "bloqueado": 0,
+      "url_referencia": "https://www.hu-steel.com/es/news364_1181.html",
+      "imagen_url": "./Tubo Cuadrado.png"
+    },
+    {
+      "id_producto": 7,
+      "codigo": "AIS-PLA-2MM",
+      "nombre": "Plancha Negra Laminada 2.0mm",
+      "especificacion": "Formato 1.20m x 2.40m · Acero A36",
+      "unidad": "Plancha",
+      "categoria": "Planchas y Calaminas",
+      "categoria_slug": "planchas",
+      "precio_bs": 360.0,
+      "stock": 64,
+      "bloqueado": 0,
+      "url_referencia": "http://treamperu.com/index.php/productos/calamina-galvanizada/",
+      "imagen_url": "./Calamina Trapezoidal 0.40mm.jpg"
+    },
+    {
+      "id_producto": 8,
+      "codigo": "AIS-CAL-040",
+      "nombre": "Calamina Trapezoidal 0.40mm",
+      "especificacion": "Acero prepintado · Largo 3.00m",
+      "unidad": "Hoja 3m",
+      "categoria": "Planchas y Calaminas",
+      "categoria_slug": "planchas",
+      "precio_bs": 76.0,
+      "stock": 400,
+      "bloqueado": 0,
+      "url_referencia": "http://treamperu.com/index.php/productos/calamina-galvanizada/",
+      "imagen_url": "./Calamina Trapezoidal 0.40mm.jpg"
+    }
+  ]
+}

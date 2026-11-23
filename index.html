@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#dc2626">
+  <title>Aceros Import Silver | Catálogo de Material de Construcción en Acero</title>
+  <link rel="manifest" href="./manifest.json">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <!-- Splash Screen inicial -->
+  <div id="splashScreen" class="splash-screen" aria-hidden="false">
+    <div class="splash-content">
+      <div class="logo-orb" aria-hidden="true">AIS</div>
+      <h2 class="splash-brand">ACEROS IMPORT SILVER</h2>
+      <p class="splash-tagline">Acero estructural y construcción</p>
+      <div class="splash-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="75">
+        <div class="splash-progress-bar"></div>
+      </div>
+      <p class="splash-status">Cargando catálogo de acero...</p>
+    </div>
+  </div>
+
+  <!-- Pantalla de Bienvenida / Hero -->
+  <section id="welcomeScreen" class="welcome-screen" aria-labelledby="welcomeTitle">
+    <div class="welcome-card">
+      <div class="logo-orb welcome-orb" aria-hidden="true">AIS</div>
+      <h1 id="welcomeTitle" class="welcome-title">¡Bienvenido al acero de alta resistencia!</h1>
+      <p class="welcome-desc">
+        Barras corrugadas, vigas, tubos estructurales y planchas listas para tu obra.
+      </p>
+      <button type="button" id="btnExplorarCatalogo" class="btn btn-cta">
+        EXPLORAR CATÁLOGO
+      </button>
+      <button type="button" id="btnSaltarBienvenida" class="btn btn-ghost">
+        Ir directo al catálogo
+      </button>
+    </div>
+  </section>
+
+  <!-- Contenedor principal de la aplicación -->
+  <div id="appContainer" class="app-shell" hidden>
+    <header class="site-header">
+      <div class="header-left">
+        <button type="button" id="btnVolverInicio" class="brand-trigger" aria-label="Ir al inicio del catálogo">
+          <span class="brand-mini-logo" aria-hidden="true">AIS</span>
+          <span class="header-brand-text">
+            <strong id="headerTituloVista">Aceros Import Silver</strong>
+            <small>Material en acero</small>
+          </span>
+        </button>
+      </div>
+
+      <div class="header-actions">
+        <button type="button" id="btnInstalarPWA" class="btn btn-install" hidden>
+          ↓ Instalar
+        </button>
+
+        <button type="button" id="btnIrCotizacionTop" class="icon-btn" aria-label="Ver cotización y carrito">
+          <span>🛒</span>
+          <span id="contadorCarrito" class="cart-badge">0</span>
+        </button>
+
+        <button type="button" id="btnTema" class="icon-btn theme-toggle" aria-pressed="true" aria-label="Cambiar entre modo oscuro y modo claro">
+          <span aria-hidden="true">☀️ / 🌙</span>
+        </button>
+
+        <button type="button" id="btnAbrirMenu" class="icon-btn" aria-expanded="false" aria-controls="drawerMenu" aria-label="Abrir menú lateral">
+          ☰
+        </button>
+      </div>
+    </header>
+
+    <!-- Menú lateral (Drawer) -->
+    <div id="drawerBackdrop" class="drawer-backdrop" hidden></div>
+    <aside id="drawerMenu" class="drawer-menu" aria-label="Menú principal y categorías" hidden>
+      <div class="drawer-header">
+        <div class="drawer-brand">
+          <span class="brand-mini-logo" aria-hidden="true">AIS</span>
+          <div>
+            <strong>ACEROS IMPORT SILVER</strong>
+            <small>Acero y Construcción</small>
+          </div>
+        </div>
+        <button type="button" id="btnCerrarMenu" class="icon-btn" aria-label="Cerrar menú lateral">✕</button>
+      </div>
+
+      <div class="drawer-body">
+        <p class="drawer-group-title">CATEGORÍAS DEL CATÁLOGO</p>
+        <div id="drawerCategorias" class="drawer-list" role="group" aria-label="Categorías del menú"></div>
+
+        <p class="drawer-group-title">NAVEGACIÓN</p>
+        <div class="drawer-list">
+          <button type="button" class="drawer-item" data-vista="inicio">🏠 Inicio</button>
+          <button type="button" class="drawer-item" data-vista="catalogo">📦 Catálogo Completo</button>
+          <button type="button" class="drawer-item" data-vista="cotizacion">🧾 Cotización y Pedido</button>
+          <button type="button" class="drawer-item" data-vista="contacto">✉️ Contacto y Auditoría</button>
+        </div>
+
+        <div class="drawer-extra-actions">
+          <button type="button" id="btnVerBienvenida" class="btn btn-outline-red">
+            Pantalla de Bienvenida
+          </button>
+          <button type="button" id="btnReproducirSplash" class="btn btn-ghost">
+            Reproducir Splash
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Contenido principal -->
+    <main id="contenidoPrincipal" class="main-content">
+      <!-- Vista 1: Inicio (Banner + Tarjetas de Categoría) -->
+      <section id="vistaInicio" class="view-section active" aria-labelledby="tituloInicio">
+        <article class="hero-banner">
+          <span class="banner-tag">ACEROS IMPORT SILVER · STOCK OBRA</span>
+          <h2 id="tituloInicio" class="hero-title">
+            Tu próxima estructura <span>empieza aquí.</span>
+          </h2>
+          <p class="hero-copy">
+            Fierro corrugado, vigas, tubos estructurales y planchas de acero. Cotiza rápido y confirma tu pedido.
+          </p>
+          <div class="hero-buttons">
+            <button type="button" id="btnBannerExplorar" class="btn btn-cta">
+              Explorar el catálogo →
+            </button>
+            <button type="button" id="btnBannerCotizar" class="btn btn-secondary">
+              Ver cotización
+            </button>
+          </div>
+        </article>
+
+        <div class="section-heading-box">
+          <span class="eyebrow">EXPLORA POR CATEGORÍA</span>
+          <h2 class="section-heading">Elige el material que necesitas hoy</h2>
+        </div>
+
+        <div id="gridCategoriasInicio" class="category-grid"></div>
+      </section>
+
+      <!-- Vista 2: Catálogo de Productos -->
+      <section id="vistaCatalogo" class="view-section" aria-labelledby="tituloCatalogo">
+        <div id="filtrosCategoria" class="chips-bar" role="group" aria-label="Filtrar por categoría"></div>
+
+        <div class="search-wrap">
+          <label for="inputBuscar" class="visually-hidden">Buscar material de acero por nombre o código</label>
+          <input
+            type="search"
+            id="inputBuscar"
+            class="search-input"
+            placeholder="Buscar fierro, viga, tubo, plancha, código..."
+            autocomplete="off"
+          >
+        </div>
+
+        <div id="subfiltrosDisponibilidad" class="chips-bar" role="group" aria-label="Filtrar por disponibilidad">
+          <button type="button" class="chip active" data-disp="todos">Todos</button>
+          <button type="button" class="chip" data-disp="stock">Con stock</button>
+          <button type="button" class="chip" data-disp="agotado">Agotados</button>
+        </div>
+
+        <div class="catalog-toolbar">
+          <h2 id="tituloCatalogo" class="catalog-title">Catálogo</h2>
+          <span id="contadorProductos" class="count-pill">0 productos</span>
+        </div>
+
+        <p id="estadoCatalogo" class="status-text" aria-live="polite">Cargando productos...</p>
+
+        <div id="gridProductos" class="products-grid" aria-live="polite"></div>
+      </section>
+
+      <!-- Vista 3: Cotización, Validación, Blacklist, Cuenta Regresiva (8s) e Historial -->
+      <section id="vistaCotizacion" class="view-section" aria-labelledby="tituloCotizacion">
+        <h2 id="tituloCotizacion" class="section-heading">Cotización y Confirmación de Pedido</h2>
+
+        <div id="listaCotizacion" class="quote-items">
+          <p class="empty-msg">Aún no agregaste materiales a tu cotización.</p>
+        </div>
+
+        <div class="quote-total-box">
+          <span>Total estimado</span>
+          <strong id="totalCotizacion">Bs. 0,00</strong>
+        </div>
+
+        <form id="formPedido" class="form-card" novalidate>
+          <h3>Datos para confirmar pedido</h3>
+
+          <div class="field-group">
+            <label for="clienteNombre">ingresa tu nombre </label>
+            <input
+              type="text"
+              id="clienteNombre"
+              name="cliente_nombre"
+              class="input-field"
+              placeholder=".........."
+              required
+            >
+            <small id="errorNombre" class="field-error" aria-live="polite"></small>
+          </div>
+
+          <div class="field-group">
+            <label for="clienteContacto">Teléfono o contacto</label>
+            <input
+              type="text"
+              id="clienteContacto"
+              name="cliente_contacto"
+              class="input-field"
+              placeholder="Ej. 70123456"
+              required
+            >
+            <small id="errorContacto" class="field-error" aria-live="polite"></small>
+          </div>
+
+          <div class="action-row">
+            <button type="submit" id="btnIniciarConfirmacion" class="btn btn-cta">
+              Preparar confirmación
+            </button>
+            <button type="button" id="btnConfirmarCuentaRegresiva" class="btn btn-confirm" hidden>
+              Confirmar pedido (8s)
+            </button>
+            <button type="button" id="btnCancelarCuentaRegresiva" class="btn btn-secondary" hidden>
+              Cancelar
+            </button>
+          </div>
+
+          <p id="estadoPedido" class="status-text" aria-live="polite"></p>
+        </form>
+
+        <div class="history-card">
+          <h3>Historial de Pedidos Confirmados</h3>
+          <div id="listaHistorial" class="quote-items" aria-live="polite">
+            <p class="empty-msg">Sin pedidos confirmados aún.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Vista 4: Contacto y Auditoría en Vivo (Smoke Test DOM y A11Y) -->
+      <section id="vistaContacto" class="view-section" aria-labelledby="tituloContacto">
+        <div class="contact-hero-card">
+          <span class="eyebrow">ESTAMOS PARA AYUDARTE</span>
+          <h2 id="tituloContacto" class="section-heading">Hablemos de tu obra y cotizaciones.</h2>
+          <p class="hero-copy">
+            Escríbenos para consultas de stock, medidas de acero estructural o soporte de tu pedido.
+          </p>
+          <ul class="benefits-list">
+            <li>✓ Consultas sobre disponibilidad y medidas</li>
+            <li>✓ Seguimiento de cotizaciones y pedidos</li>
+            <li>✓ Verificación técnica y de accesibilidad en vivo</li>
+          </ul>
+        </div>
+
+        <form id="formContacto" class="form-card" novalidate>
+          <h3>Envíanos un mensaje</h3>
+
+          <div class="field-group">
+            <label for="contactoNombre">ingresa tu nombre </label>
+            <input
+              type="text"
+              id="contactoNombre"
+              name="contacto_nombre"
+              class="input-field"
+              placeholder="¿Cómo te llamas?"
+              required
+            >
+            <small id="errorContactoNombre" class="field-error" aria-live="polite"></small>
+          </div>
+
+          <div class="field-group">
+            <label for="contactoCorreo">Correo electrónico o teléfono</label>
+            <input
+              type="text"
+              id="contactoCorreo"
+              name="contacto_correo"
+              class="input-field"
+              placeholder="tu@correo.com o 70123456"
+              required
+            >
+            <small id="errorContactoCorreo" class="field-error" aria-live="polite"></small>
+          </div>
+
+          <div class="field-group">
+            <label for="contactoMensaje">¿En qué podemos ayudarte?</label>
+            <textarea
+              id="contactoMensaje"
+              name="contacto_mensaje"
+              class="input-field textarea-field"
+              rows="3"
+              placeholder="Escribe tu consulta sobre materiales de acero..."
+              required
+            ></textarea>
+            <small id="errorContactoMensaje" class="field-error" aria-live="polite"></small>
+          </div>
+
+          <button type="submit" class="btn btn-cta">Enviar consulta</button>
+          <p id="estadoContacto" class="status-text" aria-live="polite"></p>
+        </form>
+
+        <section class="audit-card" aria-labelledby="tituloAuditoria">
+          <h3 id="tituloAuditoria">Auditoría en Vivo (DOM y A11Y)</h3>
+          <div class="action-row">
+            <button type="button" id="btnSmokeTest" class="btn btn-secondary">
+              Ejecutar Smoke Test DOM
+            </button>
+            <button type="button" id="btnAuditarA11Y" class="btn btn-secondary">
+              Auditar Semántica A11Y
+            </button>
+          </div>
+          <div id="resultadoAuditoria" class="audit-box" aria-live="polite">
+            Listo para auditar el DOM y la semántica A11Y en vivo sin recargar la página.
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <!-- Navegación inferior en móvil vertical; se reacomoda arriba/lateral en >=768px o landscape -->
+    <nav class="bottom-nav" aria-label="Navegación principal">
+      <button type="button" class="bottom-nav-btn active" data-vista="inicio">
+        <span aria-hidden="true">🏠</span>
+        <span>Inicio</span>
+      </button>
+      <button type="button" class="bottom-nav-btn" data-vista="catalogo">
+        <span aria-hidden="true">📦</span>
+        <span>Catálogo</span>
+      </button>
+      <button type="button" class="bottom-nav-btn" data-vista="cotizacion">
+        <span aria-hidden="true">🛒</span>
+        <span>Cotizar</span>
+      </button>
+      <button type="button" class="bottom-nav-btn" data-vista="contacto">
+        <span aria-hidden="true">✉️</span>
+        <span>Contacto</span>
+      </button>
+    </nav>
+
+    <footer class="site-footer">
+      <p>Aceros Import Silver — Material de construcción en acero.</p>
+    </footer>
+  </div>
+
+  <!-- Modal de detalle de producto -->
+  <dialog id="modalDetalle" class="detail-modal" aria-labelledby="modalTitulo">
+    <div class="modal-content">
+      <img id="modalImagen" src="./imgfierro-corrugado.svg" alt="" class="modal-img">
+      <p id="modalCodigoCat" class="product-meta"></p>
+      <h3 id="modalTitulo">Detalle del producto</h3>
+      <p id="modalEspecificacion" class="product-spec"></p>
+      <p id="modalPrecioStock" class="modal-price"></p>
+      <div class="action-row">
+        <button type="button" id="btnModalAgregar" class="btn btn-cta">Agregar a cotización</button>
+        <button type="button" id="btnCerrarModal" class="btn btn-secondary">Cerrar</button>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="./app.js"></script>
+</body>
+</html>

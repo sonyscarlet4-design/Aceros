@@ -1,0 +1,11 @@
+{
+  "name": "Aceros Import Silver - Catálogo",
+  "short_name": "Aceros Silver",
+  "description": "Catálogo de material de construcción de acero: barras, vigas, tubos y planchas.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0b0d12",
+  "theme_color": "#dc2626"
+}
