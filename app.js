@@ -855,48 +855,51 @@
     return base ? Number(base.precio_usd) : 0;
   }
 
-  async function cargarCatalogo() {
-    let guardadoAdmin = null;
-    try {
-      const rawAdmin = localStorage.getItem(STORAGE_KEYS.CATALOGO_ADMIN);
-      if (rawAdmin) {
-        const parsedAdmin = JSON.parse(rawAdmin);
-        if (Array.isArray(parsedAdmin) && parsedAdmin.length > 0) {
-          guardadoAdmin = parsedAdmin;
-        }
-      }
-    } catch (_) {}
+  function aplicarDatosCatalogo(data, origenTexto) {
+    state.categorias = Array.isArray(data.categorias) && data.categorias.length
+      ? data.categorias
+      : CATALOGO_BASE.categorias;
 
-    if (guardadoAdmin) {
-      state.categorias = CATALOGO_BASE.categorias;
-      state.productos = guardadoAdmin.map((p) => ({
-        ...p,
-        precio_usd: obtenerPrecioUsd(p)
-      }));
-      if (els.estadoCatalogo) {
-        els.estadoCatalogo.textContent = 'Catálogo gestionado por administrador (precios en USD).';
-      }
-    } else {
-      try {
-        const resp = await fetch('./productos.json', { cache: 'no-store' });
-        if (!resp.ok) throw new Error('Sin JSON externo');
-        const data = await resp.json();
-        state.categorias = Array.isArray(data.categorias) ? data.categorias : CATALOGO_BASE.categorias;
-        const listaProd = Array.isArray(data.productos) ? data.productos : CATALOGO_BASE.productos;
-        state.productos = listaProd.map((p) => ({
-          ...p,
-          precio_usd: obtenerPrecioUsd(p)
-        }));
-        if (els.estadoCatalogo) {
-          els.estadoCatalogo.textContent = 'Catálogo sincronizado (precios en USD).';
-        }
-      } catch (_) {
-        state.categorias = CATALOGO_BASE.categorias;
-        state.productos = CATALOGO_BASE.productos.map((p) => ({ ...p }));
-        if (els.estadoCatalogo) {
-          els.estadoCatalogo.textContent = 'Catálogo activo desde memoria interna (precios en USD).';
-        }
-      }
+    const listaProd = Array.isArray(data.productos) && data.productos.length
+      ? data.productos
+      : CATALOGO_BASE.productos;
+
+    state.productos = listaProd.map((p) => ({
+      ...p,
+      id_producto: Number(p.id_producto),
+      precio_usd: Number(p.precio_usd),
+      stock: Number(p.stock),
+      bloqueado: Number(p.bloqueado || 0)
+    }));
+
+    if (data.sucursal && typeof data.sucursal === 'object') {
+      const s = data.sucursal;
+      state.sucursal = {
+        ...SUCURSAL_INFO,
+        puntoVenta: s.punto_venta || SUCURSAL_INFO.puntoVenta,
+        referencia: s.referencia || SUCURSAL_INFO.referencia,
+        direccion: s.direccion || SUCURSAL_INFO.direccion,
+        ubicacionInterna: s.ubicacion_interna || SUCURSAL_INFO.ubicacionInterna,
+        zonaBarrio: s.zona_barrio || SUCURSAL_INFO.zonaBarrio,
+        ciudad: s.ciudad || SUCURSAL_INFO.ciudad,
+        telefono: s.telefono || SUCURSAL_INFO.telefono,
+        whatsappNumero: s.whatsapp_numero || SUCURSAL_INFO.whatsappNumero,
+        direccionCompleta: [
+          s.punto_venta,
+          s.referencia,
+          s.direccion,
+          s.ubicacion_interna,
+          s.zona_barrio,
+          s.ciudad
+        ]
+          .filter(Boolean)
+          .join(' · ') || SUCURSAL_INFO.direccionCompleta
+      };
+      inyectarDatosSucursalEnDOM();
+    }
+
+    if (els.estadoCatalogo && origenTexto) {
+      els.estadoCatalogo.textContent = origenTexto;
     }
 
     renderCategoriasInicio();
@@ -904,6 +907,55 @@
     renderFiltrosCategoria();
     renderProductos();
     if (state.adminAutenticado) renderAdminPanel();
+  }
+
+  async function cargarCatalogo(forzarApi = false) {
+    let guardadoAdmin = null;
+    if (!forzarApi) {
+      try {
+        const rawAdmin = localStorage.getItem(STORAGE_KEYS.CATALOGO_ADMIN);
+        if (rawAdmin) {
+          const parsedAdmin = JSON.parse(rawAdmin);
+          if (Array.isArray(parsedAdmin) && parsedAdmin.length > 0) {
+            guardadoAdmin = parsedAdmin;
+          }
+        }
+      } catch (_) {}
+    }
+
+    if (guardadoAdmin) {
+      aplicarDatosCatalogo(
+        { categorias: CATALOGO_BASE.categorias, productos: guardadoAdmin, sucursal: null },
+        'Catálogo local actualizado por administrador (precios en USD).'
+      );
+      return;
+    }
+
+    try {
+      const respApi = await fetch('./api.php?accion=catalogo', { cache: 'no-store' });
+      if (respApi.ok) {
+        const dataApi = await respApi.json();
+        if (dataApi && dataApi.ok) {
+          aplicarDatosCatalogo(
+            dataApi,
+            'Catálogo conectado a MySQL (aceros_import_silver · precios en USD).'
+          );
+          return;
+        }
+      }
+    } catch (_) {}
+
+    try {
+      const resp = await fetch('./productos.json', { cache: 'no-store' });
+      if (!resp.ok) throw new Error('Sin JSON externo');
+      const data = await resp.json();
+      aplicarDatosCatalogo(data, 'Catálogo cargado desde productos.json (precios en USD).');
+    } catch (_) {
+      aplicarDatosCatalogo(
+        CATALOGO_BASE,
+        'Catálogo activo desde memoria interna (precios en USD).'
+      );
+    }
   }
 
   function renderCategoriasInicio() {
@@ -1322,7 +1374,22 @@
     }, 1000);
   }
 
-  function confirmarPedido() {
+  async function guardarPedidoEnBD(pedido) {
+    try {
+      const resp = await fetch('./api.php?accion=guardar_pedido', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(pedido)
+      });
+      if (!resp.ok) return false;
+      const data = await resp.json();
+      return Boolean(data && data.ok);
+    } catch (_) {
+      return false;
+    }
+  }
+
+  async function confirmarPedido() {
     if (!state.datosPedidoPendientes || state.carrito.length === 0) return;
     const total = calcularTotal();
     const folio = `AIS-${Date.now().toString().slice(-5)}`;
@@ -1337,6 +1404,8 @@
       estado: 'Enviado a WhatsApp'
     };
 
+    const guardadoBD = await guardarPedidoEnBD(pedidoConfirmado);
+
     state.historial.unshift(pedidoConfirmado);
     persistirHistorial();
     hidratarHistorialDOM();
@@ -1350,7 +1419,8 @@
     els.formPedido?.reset();
 
     if (els.estadoPedido) {
-      els.estadoPedido.textContent = `Pedido ${folio} (${formatoUsd(total)}) listo. Abriendo WhatsApp (${state.sucursal.telefono})...`;
+      const notaBD = guardadoBD ? 'Guardado en MySQL.' : 'Guardado local (sin conexión BD).';
+      els.estadoPedido.textContent = `Pedido ${folio} (${formatoUsd(total)}) · ${notaBD} Abriendo WhatsApp...`;
     }
 
     abrirWhatsAppConPedido(pedidoConfirmado);
@@ -1536,9 +1606,9 @@
         try {
           localStorage.removeItem(STORAGE_KEYS.CATALOGO_ADMIN);
         } catch (_) {}
-        cargarCatalogo();
+        cargarCatalogo(true);
         const msgEl = document.getElementById('adminEstadoMsg');
-        if (msgEl) msgEl.textContent = 'Catálogo restaurado a valores base.';
+        if (msgEl) msgEl.textContent = 'Catálogo restaurado desde MySQL / base.';
         return;
       }
 
